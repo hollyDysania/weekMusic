@@ -1,12 +1,12 @@
 <template>
   <div class="recommend">
-      <scroll class="recommend-content" :data="discList">
+      <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
           <div v-if="recommends.length>0" class="slider-wrapper">
             <slider>
               <div v-for="item in recommends">
                 <a :href="item.linkUrl">
-                  <img :src="item.picUrl" alt="">
+                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick">
                 </a>
               </div>
             </slider>
@@ -16,7 +16,7 @@
             <ul>
               <li v-for="item in discList" class="item">
                 <div class="icon">
-                  <img :src="item.imgurl" alt="" style="width:60px;height:60px;">
+                  <img v-lazy="item.imgurl" alt="" style="width:60px;height:60px;">
                 </div>
                 <div class="text">
                   <h2 class="name" v-html="item.creator.name"></h2>
@@ -25,6 +25,9 @@
               </li>
             </ul>
           </div>
+        </div>
+        <div class="loading-container" v-show="!discList.length">
+          <loading></loading>
         </div>
       </scroll>
   </div>
@@ -35,6 +38,7 @@ import { getRecommend, getDiscList } from "src/api/recommend";
 import { ERR_OK } from "src/api/config";
 import Slider from "src/base/slider/slider";
 import Scroll from 'src/base/scroll/scroll'
+import Loading from 'src/base/loading/loading'
 
 export default {
   data() {
@@ -46,7 +50,8 @@ export default {
   },
   components: {
     Slider,
-    Scroll
+    Scroll,
+    Loading
   },
   created() {
     this._getRecommend();
@@ -66,6 +71,13 @@ export default {
           this.discList = res.data.list;
         }
       });
+    },
+    loadImage() {
+      if(!this.checkLoaded) {
+        console.log(1)
+        this.$refs.scroll.refresh()
+        this.checkLoaded = true
+      }
     }
   }
 };
@@ -92,8 +104,8 @@ export default {
 
     .recommend-list {
       .list-title {
-        height: 65px;
-        line-height: 65px;
+        height: 60px;
+        line-height: 60px;
         text-align: center;
         font-size: $font-size-medium;
         color: $color-theme;
