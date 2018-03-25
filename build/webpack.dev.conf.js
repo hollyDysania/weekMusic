@@ -42,6 +42,20 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       }),
+      app.get('/api/getSingerList', function (req, res) {
+        var url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
+        axios.get(url, {
+          headers: {
+            referer: 'https://c.y.qq.com/',
+            host: 'c.y.qq.com'
+          },
+          params: req.query
+        }).then((response) => {
+          res.json(response.data)
+        }).catch((e) => {
+          console.log(e)
+        })
+      }),
       app.get('/api/lyric', function (req, res) {
         var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
         axios.get(url, {
