@@ -1,6 +1,5 @@
 import * as types from './mutations-types'
 export const selectPlay = function ({commit, state}, {list, index}) {
-    console.log(list, index)
     commit(types.SET_SEQUENCE_LIST, list)
     // if (state.mode === playMode.random) {
     //   let randomList = shuffle(list)

@@ -49,7 +49,7 @@ import {addClass} from 'common/js/dom'
         if (!this.slider) {
           return
         }
-        this._setSliderWidth(true)
+        this._setSliderWitdh(true)
         this.slider.refresh()
       })
     },
