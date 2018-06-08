@@ -5,7 +5,7 @@
       </div>
       <h1 class="title" v-html="title"></h1>
       <div class="bg-image" :style="bgStyle" ref="bgImage">
-          <div class="play-wrapper" v-show="songs.length" ref="play">
+          <div class="play-wrapper" v-show="songs.length" ref="play" @click="random">
               <div class="play">
                   <div class="icon-play">
                   </div>
@@ -26,11 +26,11 @@
 </template>
 
 <script>
-import Scroll from "src/base/scroll/scroll";
-import SongList from "src/base/song-list/song-list";
-import {prefixStyle} from 'common/js/dom'
+import Scroll from 'src/base/scroll/scroll'
+import SongList from 'src/base/song-list/song-list'
+import { prefixStyle } from 'common/js/dom'
 import LoadingContainer from 'src/base/loading/loading'
-import {mapActions} from 'vuex'
+import { mapActions } from 'vuex'
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
 const bacldrop = prefixStyle('webkitTransform')
@@ -43,7 +43,7 @@ export default {
   props: {
     bgImage: {
       type: String,
-      default: ""
+      default: ''
     },
     songs: {
       type: Array,
@@ -51,75 +51,77 @@ export default {
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     }
   },
   data() {
-      return {
-          scrollY: 0
-      }
+    return {
+      scrollY: 0
+    }
   },
   computed: {
     bgStyle() {
-      return `background-image:url(${this.bgImage})`;
+      return `background-image:url(${this.bgImage})`
     }
   },
   watch: {
-      scrollY(newY) {
-          let zIndex = 0
-          let scale = 1
-          let blur = 0
-          let translateY = Math.max(this.minTranslateY, newY)
-          this.$refs.bgLayer.style[transform] =  `translate3d(0, ${translateY}px, 0)`
-          const precent = Math.abs(newY/this.imgHeight)
-          if(newY > 0) {
-              scale = 1 + precent
-              zIndex = 10
-          } else {
-              blur = Math.min(20*precent, 20)
-          }
-          this.$refs.filter.style[bacldrop] = `blur(${blur}px)`
-          if(newY < this.minTranslateY) {
-              zIndex = 10
-              this.$refs.bgImage.style.paddingTop = 0
-              this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
-              this.$refs.play.style.display = 'none'
-          } else {
-              this.$refs.bgImage.style.paddingTop = `70%`
-              this.$refs.bgImage.style.height = `0px`
-              this.$refs.play.style.display = ''
-          }
-          this.$refs.bgImage.style.zIndex = zIndex
-          this.$refs.bgImage.style[transform] =  `scale(${scale})`
+    scrollY(newY) {
+      let zIndex = 0
+      let scale = 1
+      let blur = 0
+      let translateY = Math.max(this.minTranslateY, newY)
+      this.$refs.bgLayer.style[transform] = `translate3d(0, ${translateY}px, 0)`
+      const precent = Math.abs(newY / this.imgHeight)
+      if (newY > 0) {
+        scale = 1 + precent
+        zIndex = 10
+      } else {
+        blur = Math.min(20 * precent, 20)
       }
+      this.$refs.filter.style[bacldrop] = `blur(${blur}px)`
+      if (newY < this.minTranslateY) {
+        zIndex = 10
+        this.$refs.bgImage.style.paddingTop = 0
+        this.$refs.bgImage.style.height = `${RESERVED_HEIGHT}px`
+        this.$refs.play.style.display = 'none'
+      } else {
+        this.$refs.bgImage.style.paddingTop = `70%`
+        this.$refs.bgImage.style.height = `0px`
+        this.$refs.play.style.display = ''
+      }
+      this.$refs.bgImage.style.zIndex = zIndex
+      this.$refs.bgImage.style[transform] = `scale(${scale})`
+    }
   },
   methods: {
-      scroll(pos) {
-          this.scrollY = pos.y
-      },
-      back(){
-          this.$router.back()
-      },
-      selectItem(item, index) {
-          this.selectPlay({
-              list: this.songs,
-              index
-          })
-      },
-      ...mapActions([
-          'selectPlay'
-      ])
+    // 随机播放
+    random() {
+      this.randomPlay({list: this.songs})
+    },
+    scroll(pos) {
+      this.scrollY = pos.y
+    },
+    back() {
+      this.$router.back()
+    },
+    selectItem(item, index) {
+      this.selectPlay({
+        list: this.songs,
+        index
+      })
+    },
+    ...mapActions(['selectPlay', 'randomPlay'])
   },
   mounted() {
-      this.imgHeight = this.$refs.bgImage.clientHeight
-      this.minTranslateY = -this.imgHeight + RESERVED_HEIGHT
-      this.$refs.list.$el.style.top = `${ this.imgHeight}px`
+    this.imgHeight = this.$refs.bgImage.clientHeight
+    this.minTranslateY = -this.imgHeight + RESERVED_HEIGHT
+    this.$refs.list.$el.style.top = `${this.imgHeight}px`
   },
   created() {
-      this.probeType = 3
-      this.listenScroll = true
+    this.probeType = 3
+    this.listenScroll = true
   }
-};
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
@@ -127,115 +129,115 @@ export default {
 @import '~common/stylus/mixin';
 
 .music-list {
-    position: fixed;
-    z-index: 100;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: $color-background;
+
+  .back {
+    position: absolute;
     top: 0;
-    left: 0;
+    left: 6px;
+    z-index: 50;
+
+    .icon-back {
+      display: block;
+      padding: 10px;
+      font-size: $font-size-large-x;
+      color: $color-theme;
+    }
+  }
+
+  .title {
+    position: absolute;
+    top: 0;
+    left: 10%;
+    z-index: 40;
+    width: 80%;
+    no-wrap();
+    text-align: center;
+    line-height: 40px;
+    font-size: $font-size-large;
+    color: $color-text;
+  }
+
+  .bg-image {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-top: 70%;
+    transform-origin: top;
+    background-size: cover;
+
+    .play-wrapper {
+      position: absolute;
+      bottom: 20px;
+      z-index: 50;
+      width: 100%;
+
+      .play {
+        box-sizing: border-box;
+        width: 135px;
+        padding: 7px 0;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px solid $color-theme;
+        color: $color-theme;
+        border-radius: 100px;
+        font-size: 0;
+
+        .icon-play {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 6px;
+          font-size: $font-size-medium-x;
+        }
+
+        .text {
+          display: inline-block;
+          vertical-align: middle;
+          font-size: $font-size-small;
+          margin-left: 4px;
+        }
+      }
+    }
+
+    .filter {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(7, 17, 27, 0.4);
+    }
+  }
+
+  .bg-layer {
+    position: relative;
+    height: 100%;
+    background: $color-background;
+  }
+
+  .list {
+    position: fixed;
+    top: 0;
     bottom: 0;
-    right: 0;
+    width: 100%;
     background: $color-background;
 
-    .back {
-        position: absolute;
-        top: 0;
-        left: 6px;
-        z-index: 50;
-
-        .icon-back {
-            display: block;
-            padding: 10px;
-            font-size: $font-size-large-x;
-            color: $color-theme;
-        }
+    .song-list-wrapper {
+      padding: 20px 30px;
     }
 
-    .title {
-        position: absolute;
-        top: 0;
-        left: 10%;
-        z-index: 40;
-        width: 80%;
-        no-wrap();
-        text-align: center;
-        line-height: 40px;
-        font-size: $font-size-large;
-        color: $color-text;
+    .loading-container {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
     }
-
-    .bg-image {
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding-top: 70%;
-        transform-origin: top;
-        background-size: cover;
-
-        .play-wrapper {
-            position: absolute;
-            bottom: 20px;
-            z-index: 50;
-            width: 100%;
-
-            .play {
-                box-sizing: border-box;
-                width: 135px;
-                padding: 7px 0;
-                margin: 0 auto;
-                text-align: center;
-                border: 1px solid $color-theme;
-                color: $color-theme;
-                border-radius: 100px;
-                font-size: 0;
-
-                .icon-play {
-                    display: inline-block;
-                    vertical-align: middle;
-                    margin-right: 6px;
-                    font-size: $font-size-medium-x;
-                }
-
-                .text {
-                    display: inline-block;
-                    vertical-align: middle;
-                    font-size: $font-size-small;
-                    margin-left 4px;
-                }
-            }
-        }
-
-        .filter {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(7, 17, 27, 0.4);
-        }
-    }
-
-    .bg-layer {
-        position: relative;
-        height: 100%;
-        background: $color-background;
-    }
-
-    .list {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        background: $color-background;
-
-        .song-list-wrapper {
-            padding: 20px 30px;
-        }
-
-        .loading-container {
-            position: absolute;
-            width: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-    }
+  }
 }
 </style>
