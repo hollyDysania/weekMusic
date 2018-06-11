@@ -8,14 +8,15 @@
 import BScroll from 'better-scroll'
 export default {
   props:{
-      probeType: {
-          type: Number,
-          default: 1
-      },
-      click: {
-          type: Boolean,
-          default: true
-      },
+    probeType: {
+        type: Number,
+        default: 1
+    },
+    click: {
+        type: Boolean,
+        default: true
+    },
+    // 数据
     data: {
         type: Array,
         default: null
@@ -23,6 +24,20 @@ export default {
     listenScroll: {
         type: Boolean,
         default: false
+    },
+    // 上拉
+    pullup: {
+      type: Boolean,
+      default: false
+    },
+    // 下拉
+    pulldown: {
+      type: Boolean,
+      default: false
+    },
+    beforeScroll: {
+      type: Boolean,
+      default: false
     }
   },
   mounted() {
@@ -44,6 +59,25 @@ export default {
               this.scroll.on('scroll', (pos) => {
                   me.$emit('scroll', pos)
               })
+          }
+          if(this.pullup) {
+            this.scroll.on('scrollEnd', () => {
+              if(this.scroll.y <= (this.scroll.maxScrollY + 50)) {
+                this.$emit('scrollToEnd')
+              }
+            })
+          }
+          if(this.pulldown) {
+            this.scroll.on('touchEnd', () => {
+              if(this.scroll.y >= 20) {
+                this.$emit('pullDownEnd')
+              }
+            })
+          }
+          if(this.beforeScroll) {
+            this.scroll.on('beforeScrollStart', () => {
+              this.$emit('beforeScroll')
+            })
           }
       },
       enable() {
