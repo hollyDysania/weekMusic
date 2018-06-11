@@ -1,6 +1,6 @@
 <template>
-  <div class="singer">
-    <listView :data="singers" @select="selectSinger"></listView>
+  <div class="singer" ref="singer">
+    <listView :data="singers" @select="selectSinger" ref="singerView"></listView>
     <router-view></router-view>
   </div>
 </template>
@@ -11,6 +11,8 @@ import {ERR_OK} from 'src/api/config'
 import Singer from 'common/js/singer'
 import ListView from 'src/base/listview/listview'
 import {mapMutations} from 'vuex'
+import {playListMixin} from 'common/js/mixin'
+
 const HOT_NAME = "热门"
 const HOT_SINGER_LEN = 10
 export default {
@@ -19,6 +21,8 @@ export default {
       singers: []
     };
   },
+  // 当前页面的methods会覆盖mixin里的methods同名方法
+  mixins: [playListMixin],
   components: {
     ListView
   },
@@ -26,6 +30,13 @@ export default {
     this._getSingerList();
   },
   methods: {
+    // 有小播放器时 改变列表的bottom
+    handlePlaylist(playList) {
+      console.log(playList, 111)
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.singer.style.bottom = bottom
+      this.$refs.singerView.refresh()
+    },
     ...mapMutations({
       setsinger: 'SET_SINGER'
     }),

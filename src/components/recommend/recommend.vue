@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend">
+  <div class="recommend" ref="recommend">
       <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
           <div v-if="recommends.length>0" class="slider-wrapper">
@@ -14,7 +14,7 @@
           <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
-              <li v-for="item in discList" class="item">
+              <li @click="seletItem(item)" v-for="item in discList" class="item">
                 <div class="icon">
                   <img v-lazy="item.imgurl" alt="" style="width:60px;height:60px;">
                 </div>
@@ -30,6 +30,7 @@
           <loading></loading>
         </div>
       </scroll>
+      <router-view></router-view>
   </div>
 </template>
 
@@ -39,6 +40,7 @@ import { ERR_OK } from "src/api/config";
 import Slider from "src/base/slider/slider";
 import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
+import {playListMixin} from 'common/js/mixin'
 
 export default {
   data() {
@@ -48,6 +50,8 @@ export default {
       discList: []
     };
   },
+  // 当前页面的methods会覆盖mixin里的methods同名方法
+  mixins: [playListMixin],
   components: {
     Slider,
     Scroll,
@@ -58,6 +62,16 @@ export default {
     this._getDiscList();
   },
   methods: {
+    // 点击歌单列表
+    seletItem() {
+
+    },
+    // 有小播放器时 改变列表的bottom
+    handlePlaylist(playList) {
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.recommend.style.bottom = bottom
+      this.$refs.scroll.refresh()
+    },
     _getRecommend() {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {

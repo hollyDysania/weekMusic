@@ -31,10 +31,13 @@ import SongList from 'src/base/song-list/song-list'
 import { prefixStyle } from 'common/js/dom'
 import LoadingContainer from 'src/base/loading/loading'
 import { mapActions } from 'vuex'
+import {playListMixin} from 'common/js/mixin'
 const RESERVED_HEIGHT = 40
 const transform = prefixStyle('transform')
 const bacldrop = prefixStyle('webkitTransform')
 export default {
+  // 当前页面的methods会覆盖mixin里的methods同名方法
+  mixins: [playListMixin],
   components: {
     Scroll,
     SongList,
@@ -94,6 +97,13 @@ export default {
     }
   },
   methods: {
+    // 有小播放器时 改变列表的bottom
+    handlePlaylist(playList) {
+      console.log(playList, 222)
+      const bottom = playList.length > 0 ? '60px' : ''
+      this.$refs.list.$el.style.bottom = bottom
+      this.$refs.list.refresh()
+    },
     // 随机播放
     random() {
       this.randomPlay({list: this.songs})

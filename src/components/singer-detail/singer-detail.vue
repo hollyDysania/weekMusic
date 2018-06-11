@@ -50,7 +50,6 @@ export default {
         let ret = []
         list.forEach((v, i) => {
             let {musicData} = v
-            console.log(musicData, 9999)
             if(musicData.songid && musicData.albummid) {
                 ret.push(createSong(musicData))
             }
