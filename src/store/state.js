@@ -9,7 +9,9 @@ const state = {
   sequenceList: [],
   mode: playMode.sequence,
   currentIndex: -1,
+  //歌单详细列表
   disc: {},
+  // 排行列表
   topList: {}
 //   searchHistory: loadSearch(),
 //   playHistory: loadPlay(),

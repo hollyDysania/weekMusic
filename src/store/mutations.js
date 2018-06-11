@@ -21,6 +21,12 @@ import * as types from './mutations-types'
     },
     [types.SET_CURRENT_INDEX](state, index) {
       state.currentIndex = index
+    },
+    [types.SET_DISC](state, disc) {
+      state.disc = disc
+    },
+    [types.SET_TOP_LIST](state, topList) {
+      state.topList = topList
     }
 }
 

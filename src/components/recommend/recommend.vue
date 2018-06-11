@@ -41,6 +41,7 @@ import Slider from "src/base/slider/slider";
 import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
 import {playListMixin} from 'common/js/mixin'
+import {mapMutations} from 'vuex'
 
 export default {
   data() {
@@ -63,8 +64,11 @@ export default {
   },
   methods: {
     // 点击歌单列表
-    seletItem() {
-
+    seletItem(item) {
+      this.$router.push({
+        path: `recommend/${item.dissid}`
+      })
+      this.setDisc(item)
     },
     // 有小播放器时 改变列表的bottom
     handlePlaylist(playList) {
@@ -92,7 +96,11 @@ export default {
         this.$refs.scroll.refresh()
         this.checkLoaded = true
       }
-    }
+    },
+    ...mapMutations({
+      setDisc: 'SET_DISC'
+    })
+
   }
 };
 </script>
