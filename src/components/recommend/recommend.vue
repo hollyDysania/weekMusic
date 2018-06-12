@@ -2,14 +2,14 @@
   <div class="recommend" ref="recommend">
       <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
-          <div v-if="recommends.length>0" class="slider-wrapper">
-            <slider>
-              <div v-for="item in recommends">
+          <div v-if="recommends.length > 0" class="slider-wrapper">
+            <swiper :autoPlay='true' :showIndicator='true' interval="2500" duration="500">
+              <slide v-for="(item, index) in recommends" :key="index">
                 <a :href="item.linkUrl">
-                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick">
+                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick" height="100%" width="100%">
                 </a>
-              </div>
-            </slider>
+              </slide>
+            </swiper>
           </div>
           <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
@@ -37,12 +37,11 @@
 <script>
 import { getRecommend, getDiscList } from "src/api/recommend";
 import { ERR_OK } from "src/api/config";
-import Slider from "src/base/slider/slider";
 import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
 import {playListMixin} from 'common/js/mixin'
 import {mapMutations} from 'vuex'
-
+import { Swiper, Slide } from 'vue-swiper-component';
 export default {
   data() {
     return {
@@ -54,9 +53,10 @@ export default {
   // 当前页面的methods会覆盖mixin里的methods同名方法
   mixins: [playListMixin],
   components: {
-    Slider,
     Scroll,
-    Loading
+    Loading,
+    Swiper,
+    Slide
   },
   created() {
     this._getRecommend();
@@ -79,7 +79,8 @@ export default {
     _getRecommend() {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {
-          this.recommends = res.data.slider;
+          this.recommends = res.data.slider
+          console.log(this.recommends, 6999)
         }
       });
     },

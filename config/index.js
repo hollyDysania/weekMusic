@@ -10,11 +10,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/music/api/getCdInfo': {
+      '/getCdInfo': {
         target: 'http://ustbhuangyi.com/music/api/getCdInfo',
         changeOrigin: true,
         pathRewrite: {
-          '^/music/api/getCdInfo': ''
+          '^/getCdInfo': ''
+        }
+      },
+      '/getDiscList': {
+        target: 'http://ustbhuangyi.com/music/api/getDiscList',
+        changeOrigin: true,
+        pathRewrite: {
+          '^getDiscList': ''
         }
       }
     },
@@ -60,13 +67,28 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/music/api/getCdInfo': {
+      '/getCdInfo': {
         target: 'http://ustbhuangyi.com/music/api/getCdInfo',
         changeOrigin: true,
         pathRewrite: {
           '^/music/api/getCdInfo': ''
         }
+      },
+      '/getDiscList': {
+        target: 'http://ustbhuangyi.com/music/api/getDiscList',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/getDiscList': ''
+        }
+      },
+      '/lyric': {
+        target: 'http://ustbhuangyi.com/music/api/lyric',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/lyric': ''
+        }
       }
+
     },
     /**
      * Source Maps

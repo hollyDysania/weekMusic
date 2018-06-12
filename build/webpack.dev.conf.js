@@ -28,7 +28,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devServer: {
     // 请求之前伪造refer,host
     before(app) {
-      app.get('/api/getDiscList', function (req, res) {
+      app.get('/getDiscList', function (req, res) {
         var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
         axios.get(url, {
           headers: {
@@ -42,7 +42,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       }),
-      app.get('/api/getSingerList', function (req, res) {
+      app.get('getSingerList', function (req, res) {
         var url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
         axios.get(url, {
           headers: {
@@ -56,7 +56,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
           console.log(e)
         })
       }),
-      app.get('/api/lyric', function (req, res) {
+      app.get('/lyric', function (req, res) {
         var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
         axios.get(url, {
           headers: {

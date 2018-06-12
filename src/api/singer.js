@@ -2,8 +2,8 @@ import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
 import axios from 'axios'
 export function getSingerList() {
-//   const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
-  const url = '/api/getSingerList'
+  const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
+  // const url = '/api/getSingerList'
   const data = Object.assign({}, commonParams, {
     channel: 'singer',
     page: 'list',
@@ -14,16 +14,16 @@ export function getSingerList() {
     needNewCode: 0,
     platform: 'yqq'
   })
-
-  return axios.get(url, {
-    params: data
-  }).then((res) => {
-    return Promise.resolve(res.data)
-  })
+  return jsonp(url, data, options)
+  // return axios.get(url, {
+  //   params: data
+  // }).then((res) => {
+  //   return Promise.resolve(res.data)
+  // })
 }
 
 export function getDiscList() {
-    const url = '/api/getDiscList'
+    const url = '/getDiscList'
     const data = Object.assign({}, commonParams, {
       platform: 'yqq',
       hostUin: 0,
