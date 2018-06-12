@@ -23,7 +23,15 @@ module.exports = {
         pathRewrite: {
           '^getDiscList': ''
         }
+      },
+      '/lyric': {
+        target: 'http://ustbhuangyi.com/music/api/lyric',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/lyric': ''
+        }
       }
+
     },
     // Various Dev Server settings
     // host: 'localhost', 

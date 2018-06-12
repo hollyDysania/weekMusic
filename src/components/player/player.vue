@@ -88,11 +88,12 @@
             class="icon-mini"></i>
           </progress-scircle>
         </div>
-        <div class="control">
+        <div class="control" @click.stop="showPlaylist">
           <i class="icon-playlist"></i>
         </div>
       </div>
     </transition>
+    <playlist ref="playlist"></playlist>
     <audio :src="currentSong.url" ref="audioPlay" @canplay="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
@@ -107,6 +108,7 @@ import { shuffle } from 'common/js/util'
 import ProgressScircle from 'src/base/progress-circle/progress-circle'
 import Lyric from 'lyric-parser'
 import Scroll from 'src/base/scroll/scroll'
+import Playlist from 'src/components/playlist/playlist' // 播放列表
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
@@ -114,7 +116,8 @@ export default {
   components: {
     ProgressBar,
     ProgressScircle,
-    Scroll
+    Scroll,
+    Playlist
   },
   data() {
     return {
@@ -190,6 +193,9 @@ export default {
     }
   },
   methods: {
+    showPlaylist() {
+      this.$refs.playlist.show()
+    },
     middleTouchStart(e) {
       this.touch.initated = true
       const touch = e.touches[0]
