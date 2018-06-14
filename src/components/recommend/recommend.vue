@@ -2,11 +2,11 @@
   <div class="recommend" ref="recommend">
       <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
-          <div v-if="recommends.length > 0" class="slider-wrapper">
-            <swiper :autoPlay='true' :showIndicator='true' interval="2500" duration="500">
+          <div>
+            <swiper class="slider-wrapper" :autoPlay='true' :showIndicator='true' interval="2500" duration="500" v-if="recommends.length > 0 && showFlag">
               <slide v-for="(item, index) in recommends" :key="index">
                 <a :href="item.linkUrl">
-                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick" height="100%" width="100%">
+                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick" height="auto" width="100%">
                 </a>
               </slide>
             </swiper>
@@ -35,20 +35,24 @@
 </template>
 
 <script>
-import { getRecommend, getDiscList } from "src/api/recommend";
-import { ERR_OK } from "src/api/config";
+import { getRecommend, getDiscList } from 'src/api/recommend'
+import { ERR_OK } from 'src/api/config'
 import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
-import {playListMixin} from 'common/js/mixin'
-import {mapMutations} from 'vuex'
-import { Swiper, Slide } from 'vue-swiper-component';
+import { playListMixin } from 'common/js/mixin'
+import { mapMutations } from 'vuex'
+import { Swiper, Slide } from 'vue-swiper-component'
+import { debounce } from 'common/js/util'
 export default {
   data() {
     return {
       recommends: [],
       // 歌单
-      discList: []
-    };
+      discList: [],
+      // 窗口宽度
+      screenWidth: document.body.clientWidth,
+      showFlag: true
+    }
   },
   // 当前页面的methods会覆盖mixin里的methods同名方法
   mixins: [playListMixin],
@@ -59,8 +63,25 @@ export default {
     Slide
   },
   created() {
-    this._getRecommend();
-    this._getDiscList();
+    this._getRecommend()
+    this._getDiscList()
+  },
+  mounted() {
+    const that = this
+    window.onresize = function temp() {
+      that.screenWidth = `${document.documentElement.clientHeight}px`
+    }
+  },
+  watch: {
+    screenWidth(newWidth) {
+      console.log(newWidth)
+      debounce(() => {
+        this.showFlag = false
+        this.$nextTick(() => {
+          this.showFlag = true
+        })
+      }, 400)
+    }
   },
   methods: {
     // 点击歌单列表
@@ -82,17 +103,17 @@ export default {
           this.recommends = res.data.slider
           console.log(this.recommends, 6999)
         }
-      });
+      })
     },
     _getDiscList() {
       getDiscList().then(res => {
         if (res.code === ERR_OK) {
-          this.discList = res.data.list;
+          this.discList = res.data.list
         }
-      });
+      })
     },
     loadImage() {
-      if(!this.checkLoaded) {
+      if (!this.checkLoaded) {
         console.log(1)
         this.$refs.scroll.refresh()
         this.checkLoaded = true
@@ -101,9 +122,8 @@ export default {
     ...mapMutations({
       setDisc: 'SET_DISC'
     })
-
   }
-};
+}
 </script>
 
 <style scoped lang="stylus" rel="stylesheet/stylus">

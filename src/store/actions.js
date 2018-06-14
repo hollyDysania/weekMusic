@@ -91,3 +91,10 @@ export const selectPlay = function ({commit, state}, {list, index}) {
   export const clearSearchHistory = function({commit}) {
     commit(types.SET_SEARCH_HISTORY, clearSearch())
   }
+
+  export const deleteSong = function({commit, state}, item) {
+    let playlist = state.playList.slice()
+    let sequenceList = state.sequenceList.slice()
+    // 当前歌曲索引
+    let currentIndex = state.currentIndex
+  }

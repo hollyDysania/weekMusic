@@ -17,7 +17,7 @@
               <span class="like">
                 <i class="icon-not-favorite"></i>
               </span>
-              <span class="delete">
+              <span class="delete" @click="deleteOne(item)">
                 <i class="icon-delete"></i>
               </span>
             </li>
@@ -89,8 +89,11 @@ export default {
       const index = this.sequenceList.findIndex(song => {
         return current.id === song.id
       })
-      console.log(index)
+      // 滑动到当前歌曲
       this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
+    },
+    deleteOne(item) {
+
     },
     ...mapMutations({
       setCurrentIndex: 'SET_CURRENT_INDEX',
