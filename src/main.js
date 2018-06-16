@@ -1,13 +1,21 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import 'common/stylus/index.styl'
 import fastclick from 'fastclick'
 import 'babel-polyfill'
+import 'common/stylus/index.styl'
 import VueLazyLoad from 'vue-lazyload'
 import store from './store'
-
+// import VConsole from 'vconsole'
+// import VConsole from 'vconsole/dist/vconsole.min.js'
+// const vConsole = new VConsole();
+import Cube from 'cube-ui'
+// 
+Vue.use(Cube)
+console.log(222)
 Vue.config.productionTip = false
+window.$uri = 'http://47.96.100.173'
+// window.$uri = ''
 
 fastclick.attach(document.body)
 Vue.use(VueLazyLoad, {

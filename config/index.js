@@ -73,36 +73,12 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-    proxyTable: {
-      '/getCdInfo': {
-        target: 'http://ustbhuangyi.com/music/api/getCdInfo',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/music/api/getCdInfo': ''
-        }
-      },
-      '/getDiscList': {
-        target: 'http://ustbhuangyi.com/music/api/getDiscList',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/getDiscList': ''
-        }
-      },
-      '/lyric': {
-        target: 'http://ustbhuangyi.com/music/api/lyric',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/lyric': ''
-        }
-      }
-
-    },
+    assetsPublicPath: './',
     /**
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

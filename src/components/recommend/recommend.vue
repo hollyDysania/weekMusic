@@ -2,15 +2,16 @@
   <div class="recommend" ref="recommend">
       <scroll ref="scroll" class="recommend-content" :data="discList">
         <div>
-          <div>
-            <swiper class="slider-wrapper" :autoPlay='true' :showIndicator='true' interval="2500" duration="500" v-if="recommends.length > 0 && showFlag">
-              <slide v-for="(item, index) in recommends" :key="index">
+            <cube-slide ref="slider" :data="recommends" :loop="true" :auto-play="true">
+              <cube-slide-item v-for="(item,index) in recommends" :key="index">
                 <a :href="item.linkUrl">
-                  <img  @load="loadImage" :src="item.picUrl" alt="" class="needsclick" height="auto" width="100%">
+                  <img @load="loadImage" :src="item.picUrl" width="100%">
                 </a>
-              </slide>
-            </swiper>
-          </div>
+              </cube-slide-item>
+              <template slot="dots" slot-scope="props">
+                <span class="dot" :class="{active: props.current === index}" v-for="(item, index) in props.dots"></span>
+              </template>
+            </cube-slide>
           <div class="recommend-list">
             <h1 class="list-title">热门歌单推荐</h1>
             <ul>
@@ -41,7 +42,7 @@ import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
 import { playListMixin } from 'common/js/mixin'
 import { mapMutations } from 'vuex'
-import { Swiper, Slide } from 'vue-swiper-component'
+// import { Swiper, Slide } from 'vue-swiper-component'
 import { debounce } from 'common/js/util'
 export default {
   data() {
@@ -58,9 +59,7 @@ export default {
   mixins: [playListMixin],
   components: {
     Scroll,
-    Loading,
-    Swiper,
-    Slide
+    Loading
   },
   created() {
     this._getRecommend()
@@ -138,7 +137,28 @@ export default {
   .recommend-content {
     height: 100%;
     overflow: hidden;
-
+    .dots{
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 12px;
+      transform: translateZ(1px);
+      text-align: center;
+      font-size: 0;
+    }
+      .dot{
+        display: inline-block;
+        margin: 0 4px;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: hsla(0,0%,100%,.5);
+      }
+      .active{
+        width: 20px;
+        border-radius: 5px;
+        background: $color-theme;
+      }
     .slider-wrapper {
       position: relative;
       width: 100%;

@@ -4,7 +4,7 @@
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
     <div  class="shortcut-wrapper" v-show="!query" ref="shortcutWrapper">
-      <scroll class="shortcut" :data="shortcut" ref="shortcut">
+      <scroll class="shortcut" :data="shortcut" ref="shortcut" :refreshDelay="refreshDelay">
         <div>
           <div class="hot-key">
             <h1 class="title">热门搜索</h1>
@@ -43,8 +43,7 @@ import {mapActions, mapGetters} from 'vuex'
 import SearchList from 'src/base/search-list/search-list'
 import Confirm from 'src/base/confirm/confirm'
 import Scroll from 'src/base/scroll/scroll'
-import {playListMixin} from 'common/js/mixin'
-
+import {playListMixin, searchMixin} from 'common/js/mixin'
 
 export default {
   components: {
@@ -55,9 +54,8 @@ export default {
     Scroll
   },
   // 当前页面的methods会覆盖mixin里的methods同名方法
-  mixins: [playListMixin],
+  mixins: [playListMixin, searchMixin],
   computed: {
-    ...mapGetters(['searchHistory']),
     // scroll组件计算高度 包含两个异步数据此处合并再传:data
     shortcut() {
       return this.hotkey.concat(this.searchHistory)
@@ -75,8 +73,7 @@ export default {
   },
   data() {
     return {
-      hotkey: [],
-      query: ''
+      hotkey: []
     }
   },
   created() {
@@ -95,12 +92,6 @@ export default {
     showConfirm() {
       this.$refs.confirm.show()
     },
-    blurInput() {
-      this.$refs.searchBox.blur()
-    },
-    saveSearch() {
-      this.saveSearchHistory(this.query)
-    },
     _getHotKey(){
       getHotKey().then(res => {
         if(res.code === ERR_OK) {
@@ -108,14 +99,7 @@ export default {
         }
       })
     },
-    addQuery(query) {
-      this.$refs.searchBox.setQuery(query)
-    },
-    // 获取子组件query
-    onQueryChange(query) {
-      this.query = query
-    },
-    ...mapActions(['saveSearchHistory', 'deleteSearchHistory', 'clearSearchHistory'])
+    ...mapActions(['clearSearchHistory'])
   }
 }
 </script>

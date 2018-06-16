@@ -7,13 +7,16 @@ const Singer = () => import('src/components/singer/singer')
 const SingerDetail = () => import('src/components/singer-detail/singer-detail')
 const SongListDesc = () => import('src/components/song-list-desc/song-list-desc')
 const TopList = () => import('src/components/top-list/top-list')
+const UserCenter = () => import('src/components/user-center/user-center')
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
-      component: Reacommend
+      redirect: '/recommend'
+
     },
     {
       path: '/recommend',
@@ -54,7 +57,10 @@ export default new Router({
           component: SingerDetail
         }
       ]
-
+    },
+    {
+      path: '/user',
+      component: UserCenter
     }
   ]
 })

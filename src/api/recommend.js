@@ -13,7 +13,7 @@ export function getRecommend() {
     return  jsonp(url, data, options)
 }
 export function getDiscList() {
-    const url = '/getDiscList'
+    const url = $uri + '/getDiscList'
     const data = Object.assign({}, commonParams, {
       platform: 'yqq',
       hostUin: 0,
@@ -36,7 +36,7 @@ export function getDiscList() {
   // 歌单详细列表
   export function getSongList(disstid) {
     // const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
-    const url = '/getCdInfo'
+    const url =  $uri + '/getCdInfo'
     const data = Object.assign({}, commonParams, {
       disstid,
       type: 1,

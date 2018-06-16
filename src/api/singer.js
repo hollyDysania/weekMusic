@@ -23,7 +23,7 @@ export function getSingerList() {
 }
 
 export function getDiscList() {
-    const url = '/getDiscList'
+    const url = $uri + '/getDiscList'
     const data = Object.assign({}, commonParams, {
       platform: 'yqq',
       hostUin: 0,

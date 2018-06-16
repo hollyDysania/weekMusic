@@ -67,7 +67,7 @@
               <i @click="next" class="icon-next"></i>
             </div>
             <div class="icon i-right">
-              <i class="icon icon-not-favorite"></i>
+              <i class="icon" :class="favoriteIcon(currentSong)"  @click="toggleFavorite(currentSong)" ></i>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
           <p class="desc" v-html="currentSong.singer"></p>
         </div>
         <div class="control" :class="disable">
-          <progress-scircle :radius="32" :percent="percent">
+          <progress-scircle :radius="36" :percent="percent">
             <i :class="miniIcon" @click.stop="togglePlay"
             class="icon-mini"></i>
           </progress-scircle>
@@ -94,25 +94,26 @@
       </div>
     </transition>
     <playlist ref="playlist"></playlist>
-    <audio :src="currentSong.url" ref="audioPlay" @canplay="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
+    <audio :src="currentSong.url" ref="audioPlay" @play="ready" @error="error" @timeupdate="updateTime" @ended="end"></audio>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 import animations from 'create-keyframe-animation'
 import { prefixStyle } from 'common/js/dom'
 import ProgressBar from 'src/base/progress-bar/progress-bar'
 import { playMode } from 'common/js/config'
-import { shuffle } from 'common/js/util'
 import ProgressScircle from 'src/base/progress-circle/progress-circle'
 import Lyric from 'lyric-parser'
 import Scroll from 'src/base/scroll/scroll'
 import Playlist from 'src/components/playlist/playlist' // 播放列表
+import { playerMixin } from 'common/js/mixin'
 
 const transform = prefixStyle('transform')
 const transitionDuration = prefixStyle('transitionDuration')
 export default {
+  mixins: [playerMixin],
   components: {
     ProgressBar,
     ProgressScircle,
@@ -138,12 +139,8 @@ export default {
   computed: {
     ...mapGetters([
       'fullScreen',
-      'playList',
-      'currentSong',
       'playing',
       'currentIndex',
-      'mode',
-      'sequenceList'
     ]),
     palayIcon() {
       return this.playing ? 'icon-pause' : 'icon-play'
@@ -160,11 +157,6 @@ export default {
     },
     disable() {
       return this.songReady ? '' : 'disable'
-    },
-    iconMode() {
-      return this.mode === playMode.sequence
-        ? 'icon-sequence'
-        : this.mode === playMode.loop ? 'icon-loop' : 'icon-random'
     }
   },
   created() {
@@ -173,6 +165,9 @@ export default {
   },
   watch: {
     currentSong(newSong, oldSong) {
+      if(!newSong.id) {
+        return
+      }
       if (newSong.id === oldSong.id) {
         return
       }
@@ -180,7 +175,9 @@ export default {
       if (this.currentLyric) {
         this.currentLyric.stop()
       }
-      setTimeout(() => {
+      // 快速切换歌曲后点击暂停歌曲还在播放 先执行了pause()后执行play()
+      clearTimeout(this.timer)
+      this.timer = setTimeout(() => {
         this.$refs.audioPlay.play()
         this.getLyric()
       }, 1000)
@@ -259,6 +256,10 @@ export default {
       this.currentSong
         .getLyric()
         .then(lyric => {
+          // 解决一部造成的 歌词与歌不对应的情况
+          if(this.currentSong.lyric !== lyric) {
+            return
+          }
           this.currentLyric = new Lyric(lyric, this.handleLyric)
           if (this.playing) {
             console.log(this.currentLyric)
@@ -293,28 +294,6 @@ export default {
         this.currentLyric.seek(currentTime * 1000)
       }
     },
-    // 切换播放模式
-    changeMode() {
-      const mode = (this.mode + 1) % 3
-      this.setPlayMode(mode)
-      let list = null
-      if (mode === playMode.random) {
-        // 随机播放
-        list = shuffle(this.sequenceList)
-      } else {
-        list = this.sequenceList
-      }
-      this.setPlayList(list)
-      this.resetCurrentIndex(list)
-    },
-    // 当前播放歌曲
-    resetCurrentIndex(list) {
-      
-      let index = list.findIndex(item => {
-        return item.id === this.currentSong.id
-      })
-      this.setCurrenIndex(index)
-    },
     back() {
       this.setFullScreen(false)
     },
@@ -322,6 +301,7 @@ export default {
     end() {
       if (this.mode === playMode.loop) {
         this.loop()
+        return
       } else {
         this.next()
       }
@@ -354,12 +334,13 @@ export default {
       if (this.playList.length === 1) {
         // 歌曲列表只有一首时直接单曲循环不前后切换
         this.loop()
+        return
       } else {
         let index = this.currentIndex - 1
         if (index < 0) {
           index = this.playList.length - 1
         }
-        this.setCurrenIndex(index)
+        this.setCurrentIndex(index)
         if (!this.playing) {
           this.togglePlay()
         }
@@ -373,12 +354,13 @@ export default {
       }
       if (this.playList.length === 1) {
         this.loop()
+        return
       } else {
         let index = this.currentIndex + 1
         if (index === this.playList.length) {
           index = 0
         }
-        this.setCurrenIndex(index)
+        this.setCurrentIndex(index)
         if (!this.playing) {
           this.togglePlay()
         }
@@ -387,6 +369,7 @@ export default {
     },
     ready() {
       this.songReady = true
+      this.savePlayHistory(this.currentSong)
     },
     error() {
       this.songReady = true
@@ -469,12 +452,9 @@ export default {
       }
     },
     ...mapMutations({
-      setFullScreen: 'SET_FULL_SCREEN',
-      setPlayingState: 'SET_PLAYING_STATE',
-      setCurrenIndex: 'SET_CURRENT_INDEX',
-      setPlayMode: 'SET_PLAY_MODE',
-      setPlayList: 'SET_PLAYLIST'
-    })
+      setFullScreen: 'SET_FULL_SCREEN'
+    }),
+    ...mapActions(['savePlayHistory'])
   }
 }
 </script>
@@ -812,20 +792,16 @@ export default {
       width: 30px;
       padding: 0 10px;
 
-      &:last-child {
-        margin-bottom: 6px;
-      }
-
       .icon-play-mini, .icon-pause-mini, .icon-playlist {
-        font-size: 30px;
+        font-size: 32px;
         color: $color-theme-d;
       }
 
       .icon-mini {
         font-size: 32px;
         position: absolute;
-        left: 0;
-        top: 0;
+        left: 2px;
+        top: 4px;
       }
     }
   }

@@ -1,7 +1,7 @@
 import * as types from './mutations-types'
 import {playMode} from 'common/js/config'
 import {shuffle} from 'common/js/util'
-import {saveSearch, deleteSearch, clearSearch} from 'common/js/cache'
+import {saveSearch, deleteSearch, clearSearch, savePlay, saveFavorite, deleteFavorite} from 'common/js/cache'
 
 function findIndex(list, song) {
   return list.findIndex((item) => {
@@ -80,6 +80,7 @@ export const selectPlay = function ({commit, state}, {list, index}) {
     commit(types.SET_PLAYING_STATE, true)
   }
 
+  // 搜索历史相关
   export const saveSearchHistory = function({commit}, query) {
     commit(types.SET_SEARCH_HISTORY, saveSearch(query))
   }
@@ -92,9 +93,55 @@ export const selectPlay = function ({commit, state}, {list, index}) {
     commit(types.SET_SEARCH_HISTORY, clearSearch())
   }
 
-  export const deleteSong = function({commit, state}, item) {
-    let playlist = state.playList.slice()
+  // 删除播放列表中的一项
+  export const deleteSong = function({commit, state}, song) {
+    let playList = state.playList.slice()
     let sequenceList = state.sequenceList.slice()
     // 当前歌曲索引
     let currentIndex = state.currentIndex
+    let pIndex = findIndex(playList, song)
+    playList.splice(pIndex, 1)
+    let sIndex = findIndex(sequenceList, song)
+    sequenceList.splice(sIndex, 1)
+
+    if(currentIndex > pIndex || currentIndex === playList.length){
+      currentIndex --
+    } 
+
+    commit(types.SET_PLAYLIST, playList)
+    commit(types.SET_SEQUENCE_LIST, sequenceList)
+    commit(types.SET_CURRENT_INDEX, currentIndex)
+
+    // if(!playList.length) {
+    //   commit(types.SET_PLAYING_STATE, false)
+    // } else {
+    //   commit(types.SET_PLAYING_STATE, true)
+    // }
+
+    //优化上面的代码
+    const playingState = playList.length > 0
+    commit(types.SET_PLAYING_STATE, playingState)
+  }
+
+  // 清空播放列表
+  export const deleteSongLits = function({commit}) {
+    commit(types.SET_PLAYLIST, [])
+    commit(types.SET_SEQUENCE_LIST, [])
+    commit(types.SET_CURRENT_INDEX, -1)
+    commit(types.SET_PLAYING_STATE, false)
+  }
+
+  // 保存播放历史数据
+  export const savePlayHistory = function({commit}, song) {
+    commit(types.SET_PLAY_HISTORY, savePlay(song))
+  }
+
+  // 收藏歌曲
+  export const saveFavoriteList = function({commit}, song) {
+    commit(types.SET_FAVORITE_LIST, saveFavorite(song))
+  }
+
+  // 取消收藏
+  export const deleteFavoriteList = function({commit}, song) {
+    commit(types.SET_FAVORITE_LIST, deleteFavorite(song))
   }

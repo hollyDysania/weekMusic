@@ -1,30 +1,32 @@
 <template>
   <transition name="list-fade">
-    <div class="playlist" v-show="showFlag" @click="hide">
+    <div class="playlist"  v-show="showFlag"  @click="hide">
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
-            <i class="icon"></i>
-            <span class="text"></span>
-            <span class="clear"></span>
+            <i class="icon" :class="iconMode"  @click="changeMode"></i>
+            <span class="text">{{modeText}}</span>
+            <span class="clear" @click="showConfirm">
+              <i class="icon-clear"></i>
+            </span>
           </h1>
         </div>
-        <scroll ref="listContent" class="list-content" :data="sequenceList">
-          <ul>
-            <li class="item" ref="listItem" v-for="(item, index) in sequenceList" @click="selectItem(item, index)">
+        <scroll ref="listContent" class="list-content" :data="sequenceList" :refreshDelay="refreshDelay">
+          <transition-group name="list" tag="ul">
+            <li :key="item.id" class="item" ref="listItem" v-for="(item, index) in sequenceList" @click="selectItem(item, index)">
               <i class="current" :class="getCurrentIcon(item)"></i>
               <span class="text">{{item.name}}</span>
-              <span class="like">
-                <i class="icon-not-favorite"></i>
+              <span class="like" @click.stop="toggleFavorite(item)">
+                <i :class="favoriteIcon(item)"></i>
               </span>
-              <span class="delete" @click="deleteOne(item)">
+              <span class="delete" @click.stop="deleteOne(item)">
                 <i class="icon-delete"></i>
               </span>
             </li>
-          </ul>
+          </transition-group>
         </scroll>
         <div class="list-operate">
-          <div class="add">
+          <div class="add" @click="addSong">
             <i class="icon-add"></i>
             <span class="text">添加歌曲到列表</span>
           </div>
@@ -33,36 +35,58 @@
           <span>关闭</span>
         </div>
       </div>
+      <confirm ref="confirm" text="是否清空播放列表" confirmBtnText="清空" @confirm="confirmClear"></confirm>
+      <add-song ref="addSong"></add-song>
     </div>
   </transition>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 import Scroll from 'src/base/scroll/scroll'
 import { playMode } from 'common/js/config'
+import Confirm from 'src/base/confirm/confirm'
+import { playerMixin } from 'common/js/mixin'
+import AddSong from 'src/components/add-song/add-song'
 export default {
+  mixins: [playerMixin],
   data() {
     return {
-      showFlag: false
+      showFlag: false,
+      refreshDelay: 100
+    }
+  },
+  computed: {
+    modeText() {
+      return this.mode === playMode.sequence ? '播放顺序' : this.mode === playMode.random ? '随机播放' : '单曲循环'
     }
   },
   components: {
-    Scroll
-  },
-  computed: {
-    ...mapGetters(['sequenceList', 'currentSong', 'playList', 'mode'])
+    Scroll,
+    Confirm,
+    AddSong
   },
   methods: {
     show() {
       this.showFlag = true
       this.$nextTick(() => {
-        this.$refs.listContent.refresh()
         this.scrollToCurrent(this.currentSong)
+        this.$refs.listContent.refresh()
       })
     },
     hide() {
       this.showFlag = false
+    },
+    addSong() {
+      this.$refs.addSong.show()
+    },
+    // 删除播放列表弹窗
+    showConfirm() {
+      this.$refs.confirm.show()
+    },
+    // 清空列表
+    confirmClear() {
+      this.deleteSongLits()
     },
     // 当前播放样式
     getCurrentIcon(item) {
@@ -90,15 +114,16 @@ export default {
         return current.id === song.id
       })
       // 滑动到当前歌曲
+      console.log(index, 555)
       this.$refs.listContent.scrollToElement(this.$refs.listItem[index], 300)
     },
     deleteOne(item) {
-
+      this.deleteSong(item)
+      if(!this.playList.length) {
+        this.hide()
+      }
     },
-    ...mapMutations({
-      setCurrentIndex: 'SET_CURRENT_INDEX',
-      setPlayingState: 'SET_PLAYING_STATE'
-    })
+    ...mapActions(['deleteSong', 'deleteSongLits'])
   },
   watch: {
     currentSong(newSong, oldSong) {
@@ -110,7 +135,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
 @import '~common/stylus/variable';
