@@ -1,23 +1,18 @@
 
 > 很敬佩黄轶老师，涵盖了非常多的知识点。跟着敲还是需要一些vue基础的。
 
-![](vue音乐demo总结\99fe6dee6d7c90e2b6ad37420a58fb724332f323.gif)
 
   <!--more-->
 
   ### 关于Vue开发音乐app的项目总结
-
-> 我把它部署到了自己的服务器 可以扫码查看 左上角也可以下载我打包好的app
+线上地址 http://47.96.100.173/
+> 我把它部署到了自己的服务器 左上角也可以下载我打包好的app
 >
 > ╮(╯▽╰)╭由于我没有备案 直接用的服务器ip 
->
-> 所以**微信扫码请点击查看原网页**,**微信扫码请点击查看原网页**, **微信扫码请点击查看原网页**。重要的事情说三遍
-
-![](vue音乐demo总结\ffa520436bd0339e937d7b207c81b97d.png)
 
 #### 1.利用vue-cli 初始化项目
 
-> 请查看本站另一篇文章 ✌[点击传送门](/2018/03/09/vue-cli-init-project/)
+> 请查看本站另一篇文章 ✌[点击传送门](https://www.hollytree.top//2018/03/09/vue-cli-init-project/)
 
 #### 2.meta标签的移动端的自适应
 
@@ -125,7 +120,7 @@ export default new Router({
 
 `完成了基本的路由配置 App.vue里的router-view就会渲染对应path的component`
 
-> `最好是使用路由按需加载，请查看本站另一篇文章`✌ [点击传送](/2018/03/10/routerLazy/)
+> `最好是使用路由按需加载，请查看本站另一篇文章`✌ [点击传送](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/03/10/routerLazy/)
 
 #### 7.router-link的使用
 
@@ -153,7 +148,7 @@ improt TestOne from 'components/test1'
 
 #### 9.jsonp的原理和使用
 
-> 原理请查看本站另一篇文章✌[点击传送](/2018/03/15/jsonp的原理和使用/)
+> 原理请查看本站另一篇文章✌[点击传送](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/03/15/jsonp的原理和使用/)
 
 项目中引入了jsonp插件
 
@@ -239,7 +234,7 @@ jsonp({Aparams}).then(jsonp({Bparams})).then({jsonp(Cparams)})即可
 
 > 由于项目很多地方都需要滑动，所以我们对better-scroll进行封装
 
-> 详见本站另一篇文章✌  [点击传送](/2018/04/19/better-scoll的封装与使用/)
+> 详见本站另一篇文章✌  [点击传送](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/04/19/better-scoll的封装与使用/)
 
 #### 12.图片懒加载: Vue-Lazyload
 
@@ -271,7 +266,7 @@ Vue.use(VueLazyLoad, {
 
 vuex帮助我们管理共享状态,多个没有什么关联性的组件想要共享状态可以通过vuex
 
-详见本站另一篇文章 ✌ [vuex的学习及使用](/2018/03/24/Vuex的学习及使用/)
+详见本站另一篇文章 ✌ [vuex的学习及使用](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/03/24/Vuex的学习及使用/)
 
 #### 14.ES6 class类的基本使用
 
@@ -402,7 +397,7 @@ watch: {
 
 > 混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
 >
-> 详见本站另一篇文章✌  [点击传送 Mixins的使用](/2018/04/25/Vue中混入的使用（Mixins）/)
+> 详见本站另一篇文章✌  [点击传送 Mixins的使用](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/04/25/Vue中混入的使用（Mixins）/)
 
 #### 17.带实时提示的搜索组件的节流
 
@@ -411,7 +406,7 @@ watch: {
 - 频繁的发送请求，页面有可能造成卡顿，也增大了服务器的压力；
 - 这个时候需要进行节流优化。
 
-> [案例 传送门](/2018/05/10/javascript中的节流控制案例/)
+> [案例 传送门](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/05/10/javascript中的节流控制案例/)
 
 #### 18.Vue中常用的一些是事件修饰符
 
@@ -433,17 +428,15 @@ npm run build
 
 打包以后的文件如下：
 
-![](vue音乐demo总结\2018_06_26_23_12.16.bmp)
-
 `包含static静态资源文件夹 与 html 文件`
 
 > 由于是单页应用程序，进入首页时会加载所有的静态文件。项目比较大时会白屏很久。
 >
 > 这时推荐路由懒加载的模式进行优化，这样打包后会分模块，进入不同路由后加载对应静态资源
 >
-> 详见： [路由懒加载✌](/2018/03/10/routerLazy/)
+> 详见： [路由懒加载✌](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/03/10/routerLazy/)
 
 #### 20.手机上调试推荐使用vConsole
 
-> 一个由微信团队开发开源的插件 使用方法 [ 点击传送✌](/2018/05/26/移动端前端开发调试工具-vConsole/)
+> 一个由微信团队开发开源的插件 使用方法 [ 点击传送✌](https://www.hollytree.top//2018/03/09/vue-cli-init-project//2018/05/26/移动端前端开发调试工具-vConsole/)
 
