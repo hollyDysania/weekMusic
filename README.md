@@ -12,7 +12,7 @@
 
 #### 1.利用vue-cli 初始化项目
 
-> 请查看本站另一篇文章 ✌[点击传送门](https://www.hollytree.top/2018/03/09/vue-cli-init-project/)
+> 请查看另一篇文章 ✌[点击传送门](https://www.hollytree.top/2018/03/09/vue-cli-init-project/)
 
 #### 2.meta标签的移动端的自适应
 
@@ -120,7 +120,7 @@ export default new Router({
 
 `完成了基本的路由配置 App.vue里的router-view就会渲染对应path的component`
 
-> `最好是使用路由按需加载，请查看本站另一篇文章`✌ [点击传送](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/03/10/routerLazy/)
+> `最好是使用路由按需加载，请查看另一篇文章`✌ [点击传送](https://www.hollytree.top/2018/03/10/routerLazy/)
 
 #### 7.router-link的使用
 
@@ -148,7 +148,7 @@ improt TestOne from 'components/test1'
 
 #### 9.jsonp的原理和使用
 
-> 原理请查看本站另一篇文章✌[点击传送](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/03/15/jsonp的原理和使用/)
+> 原理请查看另一篇文章✌[点击传送](https://www.hollytree.top/2018/03/15/jsonp的原理和使用/)
 
 项目中引入了jsonp插件
 
@@ -234,7 +234,7 @@ jsonp({Aparams}).then(jsonp({Bparams})).then({jsonp(Cparams)})即可
 
 > 由于项目很多地方都需要滑动，所以我们对better-scroll进行封装
 
-> 详见本站另一篇文章✌  [点击传送](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/04/19/better-scoll的封装与使用/)
+> 详见本站另一篇文章✌  [点击传送](https://www.hollytree.top/2018/04/19/better-scoll的封装与使用/)
 
 #### 12.图片懒加载: Vue-Lazyload
 
@@ -266,7 +266,7 @@ Vue.use(VueLazyLoad, {
 
 vuex帮助我们管理共享状态,多个没有什么关联性的组件想要共享状态可以通过vuex
 
-详见本站另一篇文章 ✌ [vuex的学习及使用](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/03/24/Vuex的学习及使用/)
+详见另一篇文章 ✌ [vuex的学习及使用](https://www.hollytree.top/2018/03/24/Vuex的学习及使用/)
 
 #### 14.ES6 class类的基本使用
 
@@ -397,7 +397,7 @@ watch: {
 
 > 混入 (mixins) 是一种分发 Vue 组件中可复用功能的非常灵活的方式。
 >
-> 详见本站另一篇文章✌  [点击传送 Mixins的使用](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/04/25/Vue中混入的使用（Mixins）/)
+> 详见另一篇文章✌  [点击传送 Mixins的使用](https://www.hollytree.top/2018/04/25/Vue中混入的使用（Mixins）/)
 
 #### 17.带实时提示的搜索组件的节流
 
@@ -406,7 +406,7 @@ watch: {
 - 频繁的发送请求，页面有可能造成卡顿，也增大了服务器的压力；
 - 这个时候需要进行节流优化。
 
-> [案例 传送门](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/05/10/javascript中的节流控制案例/)
+> [案例 传送门](https://www.hollytree.top/2018/05/10/javascript中的节流控制案例/)
 
 #### 18.Vue中常用的一些是事件修饰符
 
@@ -434,9 +434,9 @@ npm run build
 >
 > 这时推荐路由懒加载的模式进行优化，这样打包后会分模块，进入不同路由后加载对应静态资源
 >
-> 详见： [路由懒加载✌](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/03/10/routerLazy/)
+> 详见： [路由懒加载✌](https://www.hollytree.top/2018/03/10/routerLazy/)
 
 #### 20.手机上调试推荐使用vConsole
 
-> 一个由微信团队开发开源的插件 使用方法 [ 点击传送✌](https://www.hollytree.top/2018/03/09/vue-cli-init-project//2018/05/26/移动端前端开发调试工具-vConsole/)
+> 一个由微信团队开发开源的插件 使用方法 [ 点击传送✌](https://www.hollytree.top/2018/05/26/移动端前端开发调试工具-vConsole/)
 
