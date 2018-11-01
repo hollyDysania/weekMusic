@@ -47,13 +47,13 @@ cnpm i babel-polyfill --save-dev
 
 然后需要在入口文件main.js中
 
-```
+```javascript
 imprort 'bable-polyfill'
 ```
 
 #### 4.引入fastclick解决移动端300ms点击延迟的问题
 
-```
+```javascript
 cnpm i fastclick --save
 ```
 
@@ -61,14 +61,14 @@ fastclick的实现原理是在检测到touchend事件的时候，会通过DOM自
 
 然后在入口文件引入
 
-```
+```javascript
 import fastclick from 'fatclick'
 fastclick.attach(document.body)
 ```
 
 #### 5.webpack.base.conf.js中可以配置别名
 
-```
+```javascript
 resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
@@ -123,7 +123,7 @@ export default new Router({
 
 #### 7.router-link的使用
 
-```
+```javascript
 <router-link tag="div" class="tab-item" to="/test1">
         <span class="tab-link">测试</span>
 </router-link>
@@ -137,7 +137,7 @@ export default new Router({
 
 使用小写 - 连接
 
-```
+```javascript
 // 父组件 test2中引入test1
 improt TestOne from 'components/test1'
 // template中使用时
@@ -151,13 +151,13 @@ improt TestOne from 'components/test1'
 
 项目中引入了jsonp插件
 
-```
+```javascript
 cnpm i jsonp --save
 ```
 
 因多处会使用到jsonp对它进行一层封装
 
-```
+```javascript
 import originJSONP from 'jsonp'
 export default function jsonp(url, data, option) {
 // url与处理后的data拼接
@@ -187,7 +187,7 @@ function param(data) {
 
 因为使用promise封装了 所以调用时要用到.then
 
-```
+```javascript
 import jsonp from 'common/js/jsonp'
 jsonp(url, data, option).then((res) => {console.log(res)})
 ```
@@ -243,7 +243,7 @@ jsonp({Aparams}).then(jsonp({Bparams})).then({jsonp(Cparams)})即可
 
 1.npm 安装
 
-```
+```javascript
 cnpm install vue-lazyload --save
 ```
 
@@ -421,7 +421,7 @@ watch: {
 
 #### 19.打包
 
-```
+```javascript
 npm run build
 ```
 
