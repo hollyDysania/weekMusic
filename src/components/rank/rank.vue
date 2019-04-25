@@ -25,7 +25,6 @@
 <script type="text/ecmascript-6">
 import {ERR_OK} from 'src/api/config'
 import {getTopList} from 'src/api/rank'
-import {createSong} from 'common/js/song'
 import Scroll from 'src/base/scroll/scroll'
 import Loading from 'src/base/loading/loading'
 import {playListMixin} from 'common/js/mixin'

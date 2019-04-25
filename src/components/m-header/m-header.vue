@@ -1,11 +1,10 @@
 <template>
   <div class="m-header">
-    <a class="download" href="http://47.96.100.173/HOLLY_MUSIC.apk">
+    <!-- <a class="download" href="http://47.96.100.173/HOLLY_MUSIC.apk">
       <i class="icon-xiazai">
         <div class="mini-text"> App</div>
       </i>
-      
-    </a>
+    </a> -->
     <div class="icon"></div>
     <h1 class="text">Holly Music</h1>
     <router-link tag="div" class="mine" to="/user">

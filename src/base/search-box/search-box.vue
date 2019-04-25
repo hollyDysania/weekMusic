@@ -30,6 +30,9 @@ import {debounce} from 'common/js/util'
       },
       blur() {
         this.$refs.querySearch.blur()
+      },
+      focus() {
+        this.$refs.querySearch.focus()
       }
     },
     created() {

@@ -1,8 +1,7 @@
 import {getLyric} from 'src/api/song'
-import {ERR_OK} from 'src/api/config'
+import { ERR_OK, commonParams } from "src/api/config"
 import {Base64} from 'js-base64'
-
-
+let _uid = ""
 export default class Song {
   constructor({ id, mid, singer, name, album, duration, image, url }) {
     this.id = id
@@ -43,11 +42,10 @@ export function createSong(musicData) {
     image: `https://y.gtimg.cn/music/photo_new/T002R300x300M000${
       musicData.albummid
     }.jpg?max_age=2592000`,
-    // url: `http://isure.stream.qqmusic.qq.com/C100${musicData.songmid}.m4a?fromtag=32`
     url: `http://ws.stream.qqmusic.qq.com/C100${
       musicData.songmid
     }.m4a?fromtag=0&guid=12654844`
-  })
+  });
 }
 
 function filterSinger(singer) {

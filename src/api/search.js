@@ -1,6 +1,7 @@
 import jsonp from 'common/js/jsonp'
 import {commonParams, options} from './config'
-
+import axios from 'axios'
+axios.defaults.baseURL = process.env.BASE_API
 export function getHotKey() {
   const url = 'https://c.y.qq.com/splcloud/fcgi-bin/gethotkey.fcg'
 
@@ -14,8 +15,8 @@ export function getHotKey() {
 }
 
 export function search(query, page, zhida, perpage) {
-  const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
-
+  const url = '/searchSong'
+  commonParams.format = 'json'
   const data = Object.assign({}, commonParams, {
     w: query,
     p: page,
@@ -34,5 +35,10 @@ export function search(query, page, zhida, perpage) {
     platform: 'h5'
   })
 
-  return jsonp(url, data, options)
+  // return jsonp(url, data, options)
+  return axios.get(url, {
+    params: data
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
 }

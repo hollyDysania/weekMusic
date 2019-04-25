@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <div class="search-box-wrapper">
+    <div class="search-box-wrapper" @click="toFocus">
       <search-box ref="searchBox" @query="onQueryChange"></search-box>
     </div>
     <div  class="shortcut-wrapper" v-show="!query" ref="shortcutWrapper">
@@ -98,6 +98,9 @@ export default {
          this.hotkey = res.data.hotkey.slice(0, 10)
         }
       })
+    },
+    toFocus() {
+      this.$refs.searchBox.focus()
     },
     ...mapActions(['clearSearchHistory'])
   }

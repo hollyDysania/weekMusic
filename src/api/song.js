@@ -1,8 +1,8 @@
 import {commonParams} from './config'
 import axios from 'axios'
-
+axios.defaults.baseURL = process.env.BASE_API;
 export function getLyric(mid) {
-  const url = $uri + '/lyric'
+  const url = '/lyric'
   const data = Object.assign({}, commonParams, {
     songmid: mid,
     pacachetime: +new Date(),
