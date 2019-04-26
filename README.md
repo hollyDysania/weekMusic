@@ -5,7 +5,10 @@
   <!--more-->
 
   ### 关于Vue开发音乐app的项目总结
-线上地址 [点击传送门](http://47.96.100.173/music)
+扫码访问
+
+![](https://raw.githubusercontent.com/hollyDysania/weekMusic/master/static/ffa520436bd0339e937d7b207c81b97d.png)
+
 `我把它部署到了自己的服务器 ╮(╯▽╰)╭由于没有备案 直接用的服务器ip`
 
 #### 1.利用vue-cli 初始化项目
